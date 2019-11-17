@@ -33,7 +33,7 @@ void parseString(char *argument){
     roll(firstNumber, secondNumber);
 }
 
-void roll(int numberDice, int diceSides){
+void roll(int numberDice = 0, int diceSides = 0){
     //Setup random number generator
     std::random_device rd;
     std::mt19937 gen(rd());
