@@ -1,6 +1,13 @@
-# roller
+# Roller
 A dice roller written in C++
 
-Usage:
-roller 2d6
-Will roll two dice with six sides
+## Invoking
+```
+roller [Number of dice]d[Number of dice sides] 
+```
+
+### Examples
+'''
+roller 2d10
+'''
+Will roll two dice with ten sides
