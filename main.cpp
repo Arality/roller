@@ -5,8 +5,8 @@
 void roll(int numberDice, int diceSides);
 void parseString(char *argument);
 
-using namespace std;
 int main(int argc, char *argv[]){
+//TODO Add some basic error checking
     for(int index = 1; index < argc; index++)
          parseString(argv[index]);
     return 0;
