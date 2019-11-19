@@ -7,6 +7,11 @@ void parseString(char *argument);
 
 int main(int argc, char *argv[]){
 //TODO Add some basic error checking
+    if(argc <= 1){
+        std::cout << "You haven't entered any arguments" << std::endl;
+        return -1;
+    }
+
     for(int index = 1; index < argc; index++)
          parseString(argv[index]);
     return 0;
@@ -14,6 +19,7 @@ int main(int argc, char *argv[]){
 
 //Parses input then calls roll() on the arguments
 void parseString(char *argument){
+    //TODO Need to refactor, so unit testing is a viable strategy, possibly into class?
     std::cmatch searchResults;
 
     //Match any numbers at the begging of the line
@@ -34,6 +40,7 @@ void parseString(char *argument){
 }
 
 void roll(int numberDice = 0, int diceSides = 0){
+    //TODO Need to refactor, so unit testing is a viable strategy, possibly into class?
     //Setup random number generator
     std::random_device rd;
     std::mt19937 gen(rd());
