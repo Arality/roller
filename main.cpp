@@ -1,26 +1,30 @@
-#include <iostream>
-#include <random>
-#include <regex>
+#include "dice.h"
 
-void roll(int numberDice, int diceSides);
-void parseString(char *argument);
+static void parseString(std::string &argument, Dice &obj);
 
-int main(int argc, char *argv[]){
-//TODO Add some basic error checking
+int main(const int argc, const char *argv[]){
+//TODO Add some basic error checking 
+    Dice roller;
+
     if(argc <= 1){
         std::cout << "You haven't entered any arguments" << std::endl;
+        std::cout << "The correct usage is: <number of dice>d<sides on dice>" << std::endl;
         return -1;
     }
 
-    for(int index = 1; index < argc; index++)
-         parseString(argv[index]);
+    for(int i = 1; i < argc; i++){
+        //I don't like this can it be cast in the function parameters instead?
+        std::string s (argv[i]);
+        parseString(s, roller);
+    }
     return 0;
 }
 
-//Parses input then calls roll() on the arguments
-void parseString(char *argument){
-    //TODO Need to refactor, so unit testing is a viable strategy, possibly into class?
-    std::cmatch searchResults;
+//Removes numbers at beginning and end of string then calls passed function with the arguments
+static void parseString(std::string &argument, Dice &obj){
+    int firstNumber {0};
+    int secondNumber {0};
+    std::smatch searchResults;
 
     //Match any numbers at the begging of the line
     std::regex firstNumberSearchString("^\\d+");
@@ -30,30 +34,33 @@ void parseString(char *argument){
 
     //Perform first search
     regex_search(argument, searchResults, firstNumberSearchString);
-    int firstNumber = stoi(searchResults[0]);
+
+    //Extract results and store in firstNumber
+    try{
+        firstNumber = stoi(searchResults[0]);
+    }
+    //TODO expand specific catch conditions, with unit testing
+    catch(std::out_of_range){
+        std::cout << "Your first number was out of range" << std::endl;
+    }
+    catch(...){ 
+        std::cout << "Sorry there was an error with the number of dice" << std::endl;
+    }
 
     //Perform second search
     regex_search(argument, searchResults, secondNumberSearchString);
-    int secondNumber = stoi(searchResults[0]);
 
-    roll(firstNumber, secondNumber);
-}
-
-void roll(int numberDice = 0, int diceSides = 0){
-    //TODO Need to refactor, so unit testing is a viable strategy, possibly into class?
-    //Setup random number generator
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, diceSides);
-    
-    int sum {0};
-    int result;
-    
-    for(int index = 0; index < numberDice; index++){
-        result = dis(gen);
-        sum = sum + result;
-        std::cout << index + 1 << " roll is: " << result <<std::endl;
+    //Extract results and store in secondNumber
+    try{
+        secondNumber = stoi(searchResults[0]);
     }
-    
-    std::cout << "Results: " << sum << std::endl;
+    //TODO expand specific catch conditions, with unit testing
+    catch(std::out_of_range){
+        std::cout << "Your second number was out of range" << std::endl;
+    }
+    catch(...){
+        std::cout << "Sorry there was an error with the number of sides" << std::endl;
+    }
+
+    obj.roll(firstNumber, secondNumber);
 }
