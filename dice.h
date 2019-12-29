@@ -1,15 +1,13 @@
-#include <iostream>
+#pragma once
 #include <random>
-#include <regex>
-#include <vector>
-#include <string>
 
 class Dice{
     private:
         int diceSides;
-        int numberDice;
         std::vector<long long> results;
         long long sum;
+        std::random_device rd;
+        std::mt19937 gen;
 
         void displayResults();
 

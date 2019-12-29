@@ -1,9 +1,12 @@
+#include <iostream>
+#include <regex>
+
 #include "dice.h"
 
-static void parseString(std::string &argument, Dice &obj);
+static void extractNumbers(const std::string &stringToSeach, Dice &obj);
 
 int main(const int argc, const char *argv[]){
-//TODO Add some basic error checking 
+//TODO Add some basic error checking, with unit testing
     Dice roller;
 
     if(argc <= 1){
@@ -13,15 +16,13 @@ int main(const int argc, const char *argv[]){
     }
 
     for(int i = 1; i < argc; i++){
-        //I don't like this can it be cast in the function parameters instead?
-        std::string s (argv[i]);
-        parseString(s, roller);
+        extractNumbers(argv[i], roller);
     }
     return 0;
 }
 
 //Removes numbers at beginning and end of string then calls passed function with the arguments
-static void parseString(std::string &argument, Dice &obj){
+static void extractNumbers(const std::string &stringToSeach, Dice &obj){
     int firstNumber {0};
     int secondNumber {0};
     std::smatch searchResults;
@@ -33,7 +34,7 @@ static void parseString(std::string &argument, Dice &obj){
     std::regex secondNumberSearchString("\\d+$");
 
     //Perform first search
-    regex_search(argument, searchResults, firstNumberSearchString);
+    regex_search(stringToSeach, searchResults, firstNumberSearchString);
 
     //Extract results and store in firstNumber
     try{
@@ -48,7 +49,7 @@ static void parseString(std::string &argument, Dice &obj){
     }
 
     //Perform second search
-    regex_search(argument, searchResults, secondNumberSearchString);
+    regex_search(stringToSeach, searchResults, secondNumberSearchString);
 
     //Extract results and store in secondNumber
     try{
